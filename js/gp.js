@@ -124,7 +124,7 @@ var MLEGaussianProcess = (function () {
   var model = {
     key: 'gp',
     kind: 'regression',
-    label: 'Gaussian Proces',
+    label: 'Gaussian Process',
     /* Wide ranges are deliberate (confirmed): ℓ up to 20 lets students stretch
        the fit into a flat line through the mean, and σn down to 0.01 lets them
        go nearly noiseless — both make the non-convexity of the surface visible.
