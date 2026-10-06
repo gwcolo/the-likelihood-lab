@@ -1,5 +1,7 @@
 # The Likelihood Lab
 
+[![CI](https://github.com/gwcolo/the-likelihood-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/gwcolo/the-likelihood-lab/actions/workflows/ci.yml)
+
 An interactive, single-page teaching demo for maximum likelihood estimation.
 Pick a distribution, see a dataset, and drag the parameter sliders to fit the
 probability density function over the data — the log-likelihood readout and
@@ -24,7 +26,16 @@ file server:
 python -m http.server
 ```
 
-Deployed via GitHub Pages.
+Live at https://gwcolo.github.io/the-likelihood-lab/
+
+## Testing and deployment
+
+Every push runs a headless browser self-test (`tools/run-selftest.sh`) on
+GitHub Actions: it loads the page in Chrome and checks 20 interactions,
+including tabs, sliders, attempt logging and the reveal and challenge states.
+Pushes to `main` deploy to GitHub Pages only if the self-test passes, so a
+failing test leaves the live site on its last good version. Both steps are
+defined in `.github/workflows/ci.yml`.
 
 ## Structure
 
