@@ -1,0 +1,10 @@
+name: CI
+
+on: push
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash tools/run-selftest.sh
