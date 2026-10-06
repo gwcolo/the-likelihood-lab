@@ -35,6 +35,17 @@ ins[1].value = 1; ins[1].dispatchEvent(new Event('input')); ins[1].dispatchEvent
 R.push(['neg-inf', q('#readout').textContent.includes('probability zero')]);
 R.push(['red-x', !!q('#param-panels path[stroke="#d03b3b"]')]);
 
+// --- triangle, lognormal, gamma: 2 panels, attempt on release, reveal
+[[2, 'triangle', 1], [3, 'lognormal', 1.5], [4, 'gamma', 3]].forEach(([i, name, v]) => {
+  tabs()[i].click();
+  R.push([name + '-2-panels', document.querySelectorAll('.param-panel').length === 2]);
+  const s = inputs()[0];
+  s.value = v; s.dispatchEvent(new Event('input')); s.dispatchEvent(new Event('change'));
+  R.push([name + '-attempt', q('#attempt-count').textContent.includes('1 attempt')]);
+  q('#btn-reveal').click();
+  R.push([name + '-reveal', q('#readout').textContent.includes('MLE (the answer)')]);
+});
+
 // --- GP tab
 tabs()[5].click();
 R.push(['gp-3-panels', document.querySelectorAll('.param-panel').length === 3]);

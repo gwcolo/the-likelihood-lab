@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: bash tools/run-selftest.sh
+      - run: node tools/test-math.js
 
   deploy:
     needs: selftest
