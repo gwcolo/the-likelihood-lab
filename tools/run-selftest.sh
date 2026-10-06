@@ -24,8 +24,20 @@ html = html.replace('</body>', f'<script>{test}</script></body>')
 open(out, 'w').write(html)
 PY
 
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-[ -x "$CHROME" ] || CHROME="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+# Find a Chrome-family browser: $CHROME if set, else the macOS apps, else the
+# Linux commands (GitHub's Ubuntu runners ship google-chrome on the PATH).
+if [ -z "${CHROME:-}" ]; then
+  for c in "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+           "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
+           google-chrome google-chrome-stable chromium chromium-browser; do
+    if command -v "$c" >/dev/null; then CHROME="$(command -v "$c")"; break; fi
+  done
+fi
+if [ -z "${CHROME:-}" ]; then
+  echo "SELFTEST FAILED: no Chrome/Brave/Chromium found (set CHROME=/path/to/browser)" >&2
+  exit 1
+fi
+echo "Using browser: $CHROME"
 
 RES="$("$CHROME" --headless --disable-gpu --virtual-time-budget=4000 \
   --dump-dom "file://$OUT" 2>/dev/null | grep -o '<title>RESULTS[^<]*</title>' || true)"
